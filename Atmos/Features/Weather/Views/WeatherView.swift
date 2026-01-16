@@ -56,7 +56,7 @@ struct WeatherView: View {
                     .tint(.white)
                     .controlSize(.large)
             } else if let weather = viewModel.weather {
-                CurrentWeatherDisplay(weather: weather)
+                CurrentWeatherDisplay(weather: weather, city: viewModel.city)
                     .transition(.push(from: .bottom))
             } else {
                 emptyStateView

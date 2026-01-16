@@ -12,6 +12,7 @@ import CoreLocation
 @MainActor
 class WeatherViewModel {
     var weather: WeatherData?
+    var city: String?
     var isLoading = false
     var errorWrapper: ErrorWrapper?
     
@@ -21,6 +22,7 @@ class WeatherViewModel {
     
     private let locationManager = LocationManager()
     private let weatherService: WeatherServiceProtocol
+    private let geocodingService = GeocodingService()
     
     init(service: WeatherServiceProtocol = WeatherService()) {
         self.weatherService = service
@@ -37,7 +39,12 @@ class WeatherViewModel {
             
             do {
                 let location = try await locationManager.requestLocation()
-                self.weather = try await weatherService.fetchWeather(for: location)
+                
+                async let weather = weatherService.fetchWeather(for: location)
+                async let city = geocodingService.fetchCity(from: location)
+                
+                self.weather = try await weather
+                self.city = try await city
             } catch {
                 handleError(error)
             }
