@@ -11,7 +11,7 @@ protocol WeatherServiceProtocol {
     func fetchWeather(for location: CLLocation) async throws -> WeatherData
 }
 
-class WeatherService: WeatherServiceProtocol {
+final class WeatherService: WeatherServiceProtocol {
     func fetchWeather(for location: CLLocation) async throws -> WeatherData {
         let urlString = "https://api.open-meteo.com/v1/forecast?latitude=\(location.coordinate.latitude)&longitude=\(location.coordinate.longitude)&current=temperature_2m,relative_humidity_2m,weathercode"
         
